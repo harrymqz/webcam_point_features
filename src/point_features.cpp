@@ -1,34 +1,47 @@
-
-//OpenCV
+// OpenCV
 #include "opencv2/opencv.hpp"
 #include "opencv2/core.hpp"
 #include "opencv2/features2d.hpp"
 
-//std
+// Std
 #include <iostream>
 #include <cstdlib>
 #include <vector>
 
-//consts
-const unsigned int MIN_NUM_FEATURES = 300; //minimum number of point fetaures
+// Consts
+// Minimum number of point fetaures
+const unsigned int MIN_NUM_FEATURES = 300;
 
 int main(int argc, char *argv[])
 {
-    cv::VideoCapture camera; //OpenCV video capture object
-    cv::Mat image; //OpenCV image object
-	int cam_id; //camera id . Associated to device number in /dev/videoX
-    cv::Ptr<cv::ORB> orb_detector = cv::ORB::create(); //ORB point feature detector
-    orb_detector->setMaxFeatures(MIN_NUM_FEATURES);
-    std::vector<cv::KeyPoint> point_set; //set of point features
-    cv::Mat descriptor_set; //set of descriptors, for each feature there is an associated descriptor
+    // OpenCV video capture object
+    cv::VideoCapture camera;
 
-	//check user args
+    // OpenCV image object
+    cv::Mat image;
+    
+    // Camera id. Associated to device number in /dev/videoX
+	int cam_id;
+    
+    // ORB point feature detector
+    cv::Ptr<cv::ORB> orb_detector = cv::ORB::create(MIN_NUM_FEATURES);
+    // orb_detector->setMaxFeatures(MIN_NUM_FEATURES);
+    
+    // Set of point features
+    std::vector<cv::KeyPoint> point_set;
+    
+    // Set of descriptors, for each feature there is an associated descriptor
+    cv::Mat descriptor_set;
+
+	// Check user args
 	switch(argc)
 	{
-		case 1: //no argument provided, so try /dev/video0
+        // No argument provided, so try /dev/video0
+		case 1:
 			cam_id = 0;
 			break;
-		case 2: //an argument is provided. Get it and set cam_id
+        // An argument is provided. Get it and set cam_id
+		case 2:
 			cam_id = atoi(argv[1]);
 			break;
 		default:
@@ -37,43 +50,43 @@ int main(int argc, char *argv[])
 			break;
 	}
 
-	//advertising to the user
+	// Advertising to the user
 	std::cout << "Opening video device " << cam_id << std::endl;
 
-    //open the video stream and make sure it's opened
+    // Open the video stream and make sure it's opened
     if( !camera.open(cam_id) )
 	{
         std::cout << "Error opening the camera. May be invalid device id. EXIT program." << std::endl;
         return -1;
     }
 
-    //Process loop. Capture and point feature extraction. User can quit pressing a key
+    // Process loop. Capture and point feature extraction. User can quit pressing a key
     while(1)
 	{
-		//Read image and check it. Blocking call up to a new image arrives from camera.
+		// Read image and check it. Blocking call up to a new image arrives from camera.
         if(!camera.read(image))
 		{
             std::cout << "No image" << std::endl;
             cv::waitKey();
         }
 
-    //**************** Find ORB point fetaures and descriptors ****************************
+        // **************** Find ORB point fetaures and descriptors ****************************
 
-        //clear previous points
+        // Clear previous points
         point_set.clear();
 
-        //detect and compute(extract) features
+        // Detect and compute(extract) features
         orb_detector->detectAndCompute(image, cv::noArray(), point_set, descriptor_set);
-
-        //draw points on the image
+        
+        // Draw points on the image
         cv::drawKeypoints( image, point_set, image, 255, cv::DrawMatchesFlags::DEFAULT );
 
-    //********************************************************************
+        // ********************************************************************
 
-        //show image
+        // Show image
         cv::imshow("Output Window", image);
 
-		//Waits 30 millisecond to check if 'q' key has been pressed. If so, breaks the loop. Otherwise continues.
+		// Waits 30 millisecond to check if 'q' key has been pressed. If so, breaks the loop. Otherwise continues.
     	if( (unsigned char)(cv::waitKey(30) & 0xff) == 'q' ) break;
     }   
 }
