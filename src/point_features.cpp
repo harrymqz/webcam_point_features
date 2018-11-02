@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
         // Detect and compute(extract) features
         orb_detector->detectAndCompute(image, cv::noArray(), point_set, descriptor_set);
-        
+
         // Draw points on the image
         cv::drawKeypoints( image, point_set, image, 255, cv::DrawMatchesFlags::DEFAULT );
 
