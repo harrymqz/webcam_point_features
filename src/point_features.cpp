@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    cv::Mat mask;
     int h_divisions = 3,
         v_divisions = 4,
         mask_height = 0,
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
             cv::waitKey();
         }
 
-        // **************** Find ORB point fetaures and descriptors ****************************
+        // **************** Find ORB point features and descriptors ****************************
 
         if (first_loop)
         {
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
         {
             for (int j = 0; j < v_divisions; j++)
             {
-                /* code */
+                // code 
             }
         }
 
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
         point_set.clear();
 
         // Detect and compute(extract) features
-        orb_detector->detectAndCompute(image, cv::noArray(), point_set, descriptor_set);
+        orb_detector->detectAndCompute(image, mask, point_set, descriptor_set);
 
         // Draw points on the image
         cv::drawKeypoints( image, point_set, image, 255, cv::DrawMatchesFlags::DEFAULT );
