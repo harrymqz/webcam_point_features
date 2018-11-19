@@ -95,7 +95,6 @@ int main(int argc, char *argv[])
             }
         }
 
-
         std::cout << "Image vertical pixels: " << image.cols << ", Image horizontal pixels: " << image.rows << std::endl;
         std::cout << "Image column size:     " << mask_width << ", Image row size: " << mask_height << std::endl;
         std::cout << "Image columns:         " << v_divisions << ",   Image rows: " << h_divisions << std::endl;
