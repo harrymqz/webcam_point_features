@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     cv::Mat image;
     
     // Camera id. Associated to device number in /dev/videoX
-	int cam_id;
+    int cam_id;
     
     // ORB point feature detector
     cv::Ptr<cv::ORB> orb_detector = cv::ORB::create(MIN_NUM_FEATURES);
@@ -32,29 +32,29 @@ int main(int argc, char *argv[])
     // Set of descriptors, for each feature there is an associated descriptor
     cv::Mat descriptor_set;
 
-	// Check user args
-	switch(argc)
-	{
+    // Check user args
+    switch(argc)
+    {
         // No argument provided, so try /dev/video0
-		case 1:
-			cam_id = 0;
-			break;
+        case 1:
+            cam_id = 0;
+            break;
         // An argument is provided. Get it and set cam_id
-		case 2:
-			cam_id = atoi(argv[1]);
-			break;
-		default:
-			std::cout << "Invalid number of arguments. Call program as: webcam_capture [video_device_id]. " << std::endl;
-			std::cout << "EXIT program." << std::endl;
-			break;
-	}
+        case 2:
+            cam_id = atoi(argv[1]);
+            break;
+        default:
+            std::cout << "Invalid number of arguments. Call program as: webcam_capture [video_device_id]. " << std::endl;
+            std::cout << "EXIT program." << std::endl;
+            break;
+    }
 
-	// Advertising to the user
-	std::cout << "Opening video device " << cam_id << std::endl;
+    // Advertising to the user
+    std::cout << "Opening video device " << cam_id << std::endl;
 
     // Open the video stream and make sure it's opened
     if( !camera.open(cam_id) )
-	{
+    {
         std::cout << "Error opening the camera. May be invalid device id. EXIT program." << std::endl;
         return -1;
     }
@@ -69,10 +69,10 @@ int main(int argc, char *argv[])
 
     // Process loop. Capture and point feature extraction. User can quit pressing a key
     while(1)
-	{
-		// Read image and check it. Blocking call up to a new image arrives from camera.
+    {
+        // Read image and check it. Blocking call up to a new image arrives from camera.
         if(!camera.read(image))
-		{
+        {
             std::cout << "No image" << std::endl;
             cv::waitKey();
         }
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
         // Show image
         cv::imshow("Output Window", image);
 
-		// Waits 30 millisecond to check if 'q' key has been pressed. If so, breaks the loop. Otherwise continues.
-    	if( (unsigned char)(cv::waitKey(30) & 0xff) == 'q' ) break;
+        // Waits 30 millisecond to check if 'q' key has been pressed. If so, breaks the loop. Otherwise continues.
+        if( (unsigned char)(cv::waitKey(30) & 0xff) == 'q' ) break;
     }   
 }
