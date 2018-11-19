@@ -9,7 +9,7 @@
 #include <vector>
 
 // Consts
-// Minimum number of point fetaures
+// Minimum number of point features
 const unsigned int MIN_NUM_FEATURES = 300;
 
 int main(int argc, char *argv[])
@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
     
     // ORB point feature detector
     cv::Ptr<cv::ORB> orb_detector = cv::ORB::create(MIN_NUM_FEATURES);
-    // orb_detector->setMaxFeatures(MIN_NUM_FEATURES);
     
     // Set of point features
     std::vector<cv::KeyPoint> point_set;
@@ -60,6 +59,13 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    int h_divisions = 3,
+        v_divisions = 4,
+        mask_height = 0,
+        mask_width  = 0;
+
+    bool first_loop = true;
+
     // Process loop. Capture and point feature extraction. User can quit pressing a key
     while(1)
 	{
@@ -71,6 +77,28 @@ int main(int argc, char *argv[])
         }
 
         // **************** Find ORB point fetaures and descriptors ****************************
+
+        if (first_loop)
+        {
+            mask_height = image.rows/h_divisions,
+            mask_width  = image.cols/v_divisions;
+
+            first_loop = false;
+        }
+
+        for (int i = 0; i < h_divisions; i++)
+        {
+            for (int j = 0; j < v_divisions; j++)
+            {
+                /* code */
+            }
+        }
+
+
+        std::cout << "Image vertical pixels: " << image.cols << ", Image horizontal pixels: " << image.rows << std::endl;
+        std::cout << "Image column size:     " << mask_width << ", Image row size: " << mask_height << std::endl;
+        std::cout << "Image columns:         " << v_divisions << ",   Image rows: " << h_divisions << std::endl;
+        std::cout << std::endl;
 
         // Clear previous points
         point_set.clear();
